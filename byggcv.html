@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bygg Mitt CV</title>
+<style>
+:root {
+--bg-app: #f4f6f9;
+--bg-sidebar: #ffffff;
+--border-color: #e2e8f0;
+--text-main: #1e293b;
+--primary: #2563eb;
+--primary-hover: #1d4ed8;
+--preview-bg: #ffffff;
+--shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.theme-modern {
+--cv-primary: #2563eb;
+--cv-text: #1e293b;
+--cv-accent: #f1f5f9;
+}
+
+.theme-dark {
+--cv-primary: #0f172a;
+--cv-text: #334155;
+--cv-accent: #f8fafc;
+}
+
+.theme-emerald {
+--cv-primary: #059669;
+--cv-text: #1f2937;
+--cv-accent: #f3f4f6;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: system-ui, Arial, sans-serif;
+background-color: var(--bg-app);
+color: var(--text-main);
+overflow: hidden;
+}
+
+.app-container {
+display: grid;
+grid-template-columns: 400px 1fr;
+height: 100vh;
+}
+
+.sidebar {
+background-color: var(--bg-sidebar);
+border-right: 1px solid var(--border-color);
+padding: 24px;
+display: flex;
+flex-direction: column;
+gap: 40px;
+overflow-y: auto;
+}
+
+h2, h3 {
+font-weight: 600;
+color: #0f172a;
+}
+
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1rem; margin-bottom: 8px; }
+
+.control-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+label {
+font-size: 0.85rem;
+font-weight: 500;
+color: #64748b;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+font-size: 0.9rem;
+background-color: #fff;
+outline: none;
+transition: border 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+border-color: var(--primary);
+}
+
+.button-group {
+display: flex;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+button {
+cursor: pointer;
+font-weight: 500;
+border-radius: 6px;
+transition: all 0.2s;
+}
+
+.button-group button {
+flex: 1;
+padding: 8px;
+background-color: #f1f5f9;
+border: 1px solid var(--border-color);
+font-size: 0.85rem;
+}
+
+.button-group button:hover {
+background-color: #e2e8f0;
+}
+
+.primary-btn {
+width: 100%;
+padding: 12px;
+background-color: var(--primary);
+color: white;
+border: none;
+font-size: 0.95rem;
+margin-top: auto;
+}
+
+.primary-btn:hover {
+background-color: var(--primary-hover);
+}
+
+#controls-list {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.form-block {
+background-color: #f8fafc;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+padding: 12px;
+cursor: grab;
+position: relative;
+}
+
+.form-block:active {
+cursor: grabbing;
+}
+
+.form-block .remove-btn {
+position: absolute;
+top: 8px;
+right: 8px;
+background: none;
+border: none;
+color: #ef4444;
+font-size: 0.8rem;
+}
+
+.grid-inputs-container {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-top: 8px;
+}
+
+.preview-container {
+padding: 40px;
+overflow-y: auto;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+}
+
+.cv-template {
+background-color: var(--preview-bg);
+width: 210mm;
+min-height: 297mm;
+padding: 20mm;
+box-shadow: var(--shadow);
+color: var(--cv-text);
+display: flex;
+flex-direction: column;
+gap: 24px;
+box-sizing: border-box;
+position: relative;
+}
+
+.cv-meta {
+margin-top: -2rem;
+margin-bottom: 3rem;
+small {
+font-size: 0.8rem;
+color: #94a3b8;
+}
+}
+
+.cv-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 2px solid var(--cv-primary);
+padding-bottom: 20px;
+
+.header-left {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+h1 {
+font-size: 2.2rem;
+color: var(--cv-primary);
+font-weight: 700;
+}
+
+p {
+font-size: 1.1rem;
+color: #64748b;
+}
+}
+
+.profile-photo {
+width: 90px;
+height: 90px;
+border-radius: 50%;
+background-size: cover;
+background-position: center;
+border: 3px solid var(--cv-primary);
+
+&.hidden { display: none !important; }
+}
+
+.contact-info {
+text-align: right;
+font-size: 0.9rem;
+line-height: 1.5;
+}
+
+.cv-section {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-bottom: 2rem;
+
+h3 {
+font-size: 1.2rem;
+color: var(--cv-primary);
+border-bottom: 1px solid var(--cv-accent);
+padding-bottom: 4px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+}
+
+.cv-section-content {
+font-size: 0.95rem;
+line-height: 1.6;
+white-space: pre-line;
+}
+
+.cv-columns {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 2rem;
+}
+
+.cv-grid {
+display: grid;
+gap: 1rem;
+
+&.grid-cols-1 { grid-template-columns: 1fr; }
+&.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+&.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+&.grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.grid-item {
+background-color: var(--cv-accent);
+padding: 12px;
+border-radius: 4px;
+}
+
+.dragging { opacity: 0.4; }
+
+.json-actions {
+display: flex;
+flex-direction: row;
+gap: 8px;
+width: 100%;
+}
+
+.json-actions button {
+flex: 1;
+padding: 10px;
+background-color: #f1f5f9;
+border: 1px solid var(--border-color);
+font-size: 0.85rem;
+color: var(--text-main);
+}
+
+.json-actions button:hover {
+background-color: #e2e8f0;
+}
+
+@page {
+size: A4;
+margin: 20mm 20mm 25mm 20mm;
+@bottom-right {
+content: "Sida " counter(page) " av " counter(pages);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+font-size: 0.8rem;
+color: #94a3b8;
+}
+@top-left {
+content: attr(data-updated);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+font-size: 0.8rem;
+color: #94a3b8;
+}
+}
+
+@media print {
+body, .app-container {
+height: auto;
+background: none;
+}
+
+.no-print { display: none !important; }
+
+.preview-container {
+padding: 0;
+overflow: visible;
+}
+
+.cv-template {
+box-shadow: none;
+width: 100%;
+min-height: auto;
+padding: 0;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+<aside class="sidebar no-print">
+<h2>Bygg Mitt CV</h2>
+
+<div class="control-group">
+<label>Välj Färgtema</label>
+<select id="theme-select">
+<option value="theme-modern">Modern Blå</option>
+<option value="theme-dark">Minimalistisk Mörk</option>
+<option value="theme-emerald">Elegant Grön</option>
+</select>
+</div>
+
+<div class="control-group">
+<label>Profilbild</label>
+<input type="file" id="image-input" accept=".jpg, .jpeg, .png, .webp">
+</div>
+
+<div class="control-group">
+<label>Personuppgifter</label>
+<input type="text" id="input-name" placeholder="Fullständigt namn" data-target="preview-name">
+<input type="text" id="input-title" placeholder="Yrkesroll / Titel" data-target="preview-title">
+<input type="email" id="input-email" placeholder="E-postadress" data-target="preview-email">
+<input type="tel" id="input-phone" placeholder="Telefonnummer" data-target="preview-phone">
+</div>
+
+<div class="sections-manager">
+<h3>Dynamiska Sektioner</h3>
+<div class="button-group">
+<button id="add-text-btn">+ Sektion</button>
+<button id="add-column-btn">+ Kolumner</button>
+<button id="add-grid-btn">+ Grid</button>
+</div>
+<div id="controls-list" class="drag-zone"></div>
+</div>
+
+<div class="control-group json-actions">
+<button id="export-json-btn">Exportera JSON</button>
+<button id="trigger-import-btn">Importera JSON</button>
+<input type="file" id="import-json-input" accept=".json" style="display: none;">
+</div>
+
+<button id="download-pdf-btn" class="primary-btn">Ladda ner som PDF</button>
+</aside>
+
+<main class="preview-container">
+<div id="cv-preview" class="cv-template theme-modern">
+<div class="cv-meta no-print">
+<small id="preview-updated"></small>
+</div>
+<header class="cv-header">
+<div class="header-left">
+<div id="preview-photo" class="profile-photo hidden"></div>
+<div>
+<h1 id="preview-name" contenteditable="true">Ditt Namn</h1>
+<p id="preview-title" contenteditable="true">Din Yrkesroll</p>
+</div>
+</div>
+<div class="header-right contact-info">
+<p id="preview-email" contenteditable="true">epost@domän.se</p>
+<p id="preview-phone" contenteditable="true">070-123 45 67</p>
+</div>
+</header>
+<div id="preview-body" class="drag-zone"></div>
+</div>
+</main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const themeSelect = document.getElementById('theme-select');
+const imageInput = document.getElementById('image-input');
+const previewPhoto = document.getElementById('preview-photo');
+const cvPreview = document.getElementById('cv-preview');
+const controlsList = document.getElementById('controls-list');
+const previewBody = document.getElementById('preview-body');
+const addTextBtn = document.getElementById('add-text-btn');
+const addColumnBtn = document.getElementById('add-column-btn');
+const addGridBtn = document.getElementById('add-grid-btn');
+const downloadPdfBtn = document.getElementById('download-pdf-btn');
+const exportJsonBtn = document.getElementById('export-json-btn');
+const importJsonInput = document.getElementById('import-json-input');
+const triggerImportBtn = document.getElementById('trigger-import-btn');
+const createId = () => 'id-' + Math.random().toString(36).substr(2, 9);
+const removeSection = (id) => {
+document.querySelector(`.form-block[data-id="${id}"]`)?.remove();
+document.querySelector(`.cv-section[data-id="${id}"]`)?.remove();
+};
+const loadTextSection = (id, titleVal = '', contentVal = '') => {
+const formBlock = document.createElement('div');
+formBlock.className = 'form-block draggable';
+formBlock.draggable = true;
+formBlock.dataset.id = id;
+formBlock.innerHTML = `
+<button class="remove-btn">Ta bort</button>
+<div class="control-group">
+<label>Sektionsrubrik</label>
+<input type="text" class="sec-title" placeholder="Ex: Arbetslivserfarenhet" value="${titleVal}">
+</div>
+<div class="control-group" style="margin-top: 8px;">
+<label>Innehåll</label>
+<textarea class="sec-content" rows="4" placeholder="Beskriv din erfarenhet...">${contentVal}</textarea>
+</div>
+`;
+const cvSection = document.createElement('section');
+cvSection.className = 'cv-section';
+cvSection.dataset.id = id;
+cvSection.innerHTML = `
+<h3 contenteditable="true">${titleVal || 'Ny Sektion'}</h3>
+<div class="cv-section-content" contenteditable="true">${contentVal || 'Innehåll...'}</div>
+`;
+formBlock.querySelector('.remove-btn').addEventListener('click', () => removeSection(id));
+formBlock.querySelector('.sec-title').addEventListener('input', (e) => {
+cvSection.querySelector('h3').textContent = e.target.value || 'Rubrik';
+});
+formBlock.querySelector('.sec-content').addEventListener('input', (e) => {
+cvSection.querySelector('.cv-section-content').textContent = e.target.value || 'Innehåll...';
+});
+controlsList.appendChild(formBlock);
+previewBody.appendChild(cvSection);
+};
+const loadColumnSection = (id, titleVal = '', colsVal = ['', '', '']) => {
+const safeCols = Array.isArray(colsVal) ? colsVal : ['', '', ''];
+const formBlock = document.createElement('div');
+formBlock.className = 'form-block draggable';
+formBlock.draggable = true;
+formBlock.dataset.id = id;
+formBlock.innerHTML = `
+<button class="remove-btn">Ta bort</button>
+<div class="control-group">
+<label>Kolumnrubrik</label>
+<input type="text" class="col-title" placeholder="Ex: Profil / Vision" value="${titleVal}">
+</div>
+<div class="control-group" style="margin-top: 8px;">
+<label>Kolumn 1</label>
+<textarea class="col-textarea" data-col="0" rows="3" placeholder="Text kolumn 1">${safeCols[0] || ''}</textarea>
+</div>
+<div class="control-group" style="margin-top: 6px;">
+<label>Kolumn 2</label>
+<textarea class="col-textarea" data-col="1" rows="3" placeholder="Text kolumn 2 (frivillig)">${safeCols[1] || ''}</textarea>
+</div>
+<div class="control-group" style="margin-top: 6px;">
+<label>Kolumn 3</label>
+<textarea class="col-textarea" data-col="2" rows="3" placeholder="Text kolumn 3 (frivillig)">${safeCols[2] || ''}</textarea>
+</div>
+`;
+const cvSection = document.createElement('section');
+cvSection.className = 'cv-section';
+cvSection.dataset.id = id;
+let colsHtml = '';
+safeCols.forEach((val, i) => {
+if (val || i === 0) {
+colsHtml += `<div class="cv-col-item" data-col="${i}" contenteditable="true">${val || 'Kolumntext...'}</div>`;
+}});
+cvSection.innerHTML = `
+<h3 contenteditable="true">${titleVal || 'Ny Kolumnsektion'}</h3>
+<div class="cv-columns">${colsHtml}</div>
+`;
+formBlock.querySelector('.remove-btn').addEventListener('click', () => removeSection(id));
+formBlock.querySelector('.col-title').addEventListener('input', (e) => {
+cvSection.querySelector('h3').textContent = e.target.value || 'Kolumnrubrik';
+});
+formBlock.querySelectorAll('.col-textarea').forEach(textarea => {
+textarea.addEventListener('input', (e) => {
+const columnsContainer = cvSection.querySelector('.cv-columns');
+const currentVals = [...formBlock.querySelectorAll('.col-textarea')].map(t => t.value);
+let newColsHtml = '';
+currentVals.forEach((val, i) => {
+if (val || i === 0) {
+newColsHtml += `<div class="cv-col-item" data-col="${i}" contenteditable="true">${val || 'Kolumntext...'}</div>`;
+}});
+columnsContainer.innerHTML = newColsHtml;
+});
+});
+controlsList.appendChild(formBlock);
+previewBody.appendChild(cvSection);
+};
+const loadGridSection = (id, titleVal = '', cardsVal = ['']) => {
+const safeCards = Array.isArray(cardsVal) ? cardsVal : [''];
+const formBlock = document.createElement('div');
+formBlock.className = 'form-block draggable';
+formBlock.draggable = true;
+formBlock.dataset.id = id;
+formBlock.innerHTML = `
+<button class="remove-btn">Ta bort</button>
+<div class="control-group">
+<label>Gridrubrik</label>
+<input type="text" class="grid-title" placeholder="Ex: Kompetenser" value="${titleVal}">
+</div>
+<div class="grid-inputs-container"></div>
+<button class="add-card-item-btn" style="width:100%; padding:6px; margin-top:8px; font-size:0.8rem;">+ Lägg till kort</button>
+`;
+const cvSection = document.createElement('section');
+cvSection.className = 'cv-section';
+cvSection.dataset.id = id;
+cvSection.innerHTML = `
+<h3 contenteditable="true">${titleVal || 'Ny Grid'}</h3>
+<div class="cv-grid"></div>
+`;
+const inputsContainer = formBlock.querySelector('.grid-inputs-container');
+const gridPreviewContainer = cvSection.querySelector('.cv-grid');
+const updateGridStyles = () => {
+const count = gridPreviewContainer.children.length;
+gridPreviewContainer.className = 'cv-grid';
+if (count === 1) gridPreviewContainer.classList.add('grid-cols-1');
+else if (count === 2) gridPreviewContainer.classList.add('grid-cols-2');
+else if (count === 3) gridPreviewContainer.classList.add('grid-cols-3');
+else if (count >= 4) gridPreviewContainer.classList.add('grid-cols-4');
+};
+const renderCards = (valsArray) => {
+inputsContainer.innerHTML = '';
+gridPreviewContainer.innerHTML = '';
+valsArray.forEach((val, index) => {
+const itemWrapper = document.createElement('div');
+itemWrapper.style.display = 'flex';
+itemWrapper.style.gap = '4px';
+itemWrapper.style.marginTop = '4px';
+itemWrapper.innerHTML = `
+<input type="text" class="grid-item-input" style="flex:1;" placeholder="Kort ${index + 1}" value="${val}">
+<button class="remove-card-item-btn" style="background:none; border:none; color:#ef4444; padding:0 4px; cursor:pointer;">X</button>
+`;
+const previewCard = document.createElement('div');
+previewCard.className = 'grid-item';
+previewCard.contentEditable = 'true';
+previewCard.textContent = val || `Kort ${index + 1}`;
+itemWrapper.querySelector('.grid-item-input').addEventListener('input', (e) => {
+previewCard.textContent = e.target.value || `Kort ${index + 1}`;
+});
+itemWrapper.querySelector('.remove-card-item-btn').addEventListener('click', () => {
+const currentVals = [...inputsContainer.querySelectorAll('.grid-item-input')].map(i => i.value);
+currentVals.splice(index, 1);
+if (currentVals.length === 0) currentVals.push('');
+renderCards(currentVals);
+});
+inputsContainer.appendChild(itemWrapper);
+gridPreviewContainer.appendChild(previewCard);
+});
+updateGridStyles();
+};
+formBlock.querySelector('.remove-btn').addEventListener('click', () => removeSection(id));
+formBlock.querySelector('.grid-title').addEventListener('input', (e) => {
+cvSection.querySelector('h3').textContent = e.target.value || 'Gridrubrik';
+});
+formBlock.querySelector('.add-card-item-btn').addEventListener('click', () => {
+const currentVals = [...inputsContainer.querySelectorAll('.grid-item-input')].map(i => i.value);
+currentVals.push('');
+renderCards(currentVals);
+});
+renderCards(safeCards);
+controlsList.appendChild(formBlock);
+previewBody.appendChild(cvSection);
+};
+themeSelect.addEventListener('change', (e) => {
+cvPreview.className = `cv-template ${e.target.value}`;
+});
+imageInput.addEventListener('change', (e) => {
+const file = e.target.files[0]; 
+if (!file) return;
+const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+const minSize = 20 * 1024;       
+const maxSize = 2 * 1024 * 1024;  
+if (!allowedTypes.includes(file.type)) {
+alert("Felaktigt format. Endast JPG, PNG och WebP tillåts.");
+e.target.value = ""; 
+return;
+}
+if (file.size < minSize) {
+alert("Bilden är för liten. Minsta storlek är 20 KB.");
+e.target.value = ""; 
+return;
+}
+if (file.size > maxSize) {
+alert("Bilden är för stor. Maximala storlek är 2 MB.");
+e.target.value = ""; 
+return;
+}
+const reader = new FileReader();
+reader.onload = (event) => {
+previewPhoto.style.backgroundImage = `url(${event.target.result})`;
+previewPhoto.classList.remove('hidden');
+};
+reader.readAsDataURL(file);
+});
+document.querySelectorAll('.sidebar input[data-target]').forEach(input => {
+input.addEventListener('input', (e) => {
+const targetId = e.target.getAttribute('data-target');
+document.getElementById(targetId).textContent = e.target.value || e.target.placeholder;
+});
+});
+const setupDragAndDrop = (zone, onUpdate) => {
+zone.addEventListener('dragstart', (e) => {
+if (e.target.classList.contains('draggable')) {
+e.target.classList.add('dragging');
+e.dataTransfer.setData('text/plain', e.target.dataset.id);
+}});
+zone.addEventListener('dragend', (e) => {
+if (e.target.classList.contains('draggable')) {
+e.target.classList.remove('dragging');
+if (onUpdate) onUpdate();
+}});
+zone.addEventListener('dragover', (e) => {
+e.preventDefault();
+const afterElement = getDragAfterElement(zone, e.clientY);
+const dragging = zone.querySelector('.dragging');
+if (dragging) {
+if (afterElement == null) {
+zone.appendChild(dragging);
+} else {
+zone.insertBefore(dragging, afterElement);
+}}});
+};
+const getDragAfterElement = (container, y) => {
+const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+return draggableElements.reduce((closest, child) => {
+const box = child.getBoundingClientRect();
+const offset = y - box.top - box.height / 2;
+if (offset < 0 && offset > closest.offset) {
+return { offset: offset, element: child };
+} else {
+return closest;
+}}, { offset: -Infinity }).element;
+};
+const syncPreviewOrder = () => {
+const currentOrder = [...controlsList.querySelectorAll('.form-block')].map(el => el.dataset.id);
+currentOrder.forEach(id => {
+const previewEl = previewBody.querySelector(`[data-id="${id}"]`);
+if (previewEl) previewBody.appendChild(previewEl);
+});
+};
+setupDragAndDrop(controlsList, syncPreviewOrder);
+exportJsonBtn.addEventListener('click', () => {
+const data = {
+theme: themeSelect.value,
+name: document.getElementById('input-name').value,
+title: document.getElementById('input-title').value,
+email: document.getElementById('input-email').value,
+phone: document.getElementById('input-phone').value,
+photo: previewPhoto.style.backgroundImage,
+photoHidden: previewPhoto.classList.contains('hidden'),
+sections: []
+};
+controlsList.querySelectorAll('.form-block').forEach(block => {
+const id = block.dataset.id;
+const sectionData = { id: id };
+if (block.querySelector('.sec-title')) {
+sectionData.type = 'text';
+sectionData.title = block.querySelector('.sec-title').value;
+sectionData.content = block.querySelector('.sec-content').value;
+} else if (block.querySelector('.col-title')) {
+sectionData.type = 'column';
+sectionData.title = block.querySelector('.col-title').value;
+sectionData.cols = [...block.querySelectorAll('.col-textarea')].map(t => t.value);
+} else if (block.querySelector('.grid-title')) {
+sectionData.type = 'grid';
+sectionData.title = block.querySelector('.grid-title').value;
+sectionData.cards = [...block.querySelectorAll('.grid-item-input')].map(i => i.value);
+}
+data.sections.push(sectionData);
+});
+const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'cv-data.json';
+a.click();
+URL.revokeObjectURL(url);
+});
+if (triggerImportBtn && importJsonInput) {
+triggerImportBtn.addEventListener('click', () => {
+importJsonInput.click();
+});
+importJsonInput.addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (!file) return;
+const reader = new FileReader();
+reader.onload = (event) => {
+try {
+const data = JSON.parse(event.target.result);                    
+themeSelect.value = data.theme || 'theme-modern';
+cvPreview.className = `cv-template ${themeSelect.value}`;
+const fields = [
+{ id: 'input-name', target: 'preview-name', val: data.name },
+{ id: 'input-title', target: 'preview-title', val: data.title },
+{ id: 'input-email', target: 'preview-email', val: data.email },
+{ id: 'input-phone', target: 'preview-phone', val: data.phone }
+];
+fields.forEach(f => {
+const el = document.getElementById(f.id);
+if (el) el.value = f.val || '';
+const targetEl = document.getElementById(f.target);
+if (targetEl) targetEl.textContent = f.val || el.placeholder;
+});
+if (data.photo && data.photo !== 'none' && data.photo !== '') {
+previewPhoto.style.backgroundImage = data.photo;
+if (!data.photoHidden) previewPhoto.classList.remove('hidden');
+} else {
+previewPhoto.style.backgroundImage = '';
+previewPhoto.classList.add('hidden');
+}
+controlsList.innerHTML = '';
+previewBody.innerHTML = '';
+if (data.sections && Array.isArray(data.sections)) {
+data.sections.forEach(sec => {
+if (sec.type === 'text') {
+loadTextSection(sec.id, sec.title, sec.content);
+} else if (sec.type === 'column') {
+loadColumnSection(sec.id, sec.title, sec.cols);
+} else if (sec.type === 'grid') {
+loadGridSection(sec.id, sec.title, sec.cards);
+}});
+}} catch (err) {
+alert('Fel vid inläsning av JSON-fil.');
+}};
+reader.readAsText(file);
+e.target.value = '';
+});
+}
+const today = new Date().toISOString().split('T')[0];
+const updatedStr = `Uppdaterad: ${today}`;
+document.getElementById('preview-updated').textContent = updatedStr;
+document.documentElement.setAttribute('data-updated', updatedStr);
+addTextBtn.addEventListener('click', () => loadTextSection(createId()));
+addColumnBtn.addEventListener('click', () => loadColumnSection(createId()));
+addGridBtn.addEventListener('click', () => loadGridSection(createId()));
+downloadPdfBtn.addEventListener('click', () => {
+window.print();
+});
+});
+</script>
+</body>
+</html>
